@@ -1,5 +1,4 @@
 package introsde.assignment.soap.ws;
-import introsde.assignment.soap.model.LifeStatus;
 import introsde.assignment.soap.model.Person;
 
 import java.util.List;
@@ -34,8 +33,10 @@ public interface People {
     @WebMethod(operationName="deletePerson")
     @WebResult(name="personId") 
     public int deletePerson(@WebParam(name="personId") int id);
-
+    
+    /*
     @WebMethod(operationName="updatePersonHealthProfile")
     @WebResult(name="hpId") 
     public int updatePersonHP(@WebParam(name="personId") int id, @WebParam(name="healthProfile") LifeStatus hp);
+    */
 }

@@ -1,5 +1,4 @@
 package introsde.assignment.soap.ws;
-import introsde.assignment.soap.model.LifeStatus;
 import introsde.assignment.soap.model.Person;
 
 import java.util.List;
@@ -51,7 +50,7 @@ public class PeopleImpl implements People {
             return -1;
         }
     }
-
+    /*
     @Override
     public int updatePersonHP(int id, LifeStatus hp) {
         LifeStatus ls = LifeStatus.getLifeStatusById(hp.getIdMeasure());
@@ -62,5 +61,5 @@ public class PeopleImpl implements People {
             return -1;
         }
     }
-
+	*/
 }

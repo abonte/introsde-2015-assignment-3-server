@@ -5,8 +5,12 @@ import introsde.assignment.soap.model.Person;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +25,10 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -32,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name="HealthMeasureHistory")
 @NamedQuery(name="HealthMeasureHistory.findAll", query="SELECT h FROM HealthMeasureHistory h")
 @XmlRootElement
+@XmlType(propOrder={"idMeasureHistory", "timestamp", "measureType" , "value" , "measureValueType"})
 public class HealthMeasureHistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -49,20 +57,21 @@ public class HealthMeasureHistory implements Serializable {
 
 	@Column(name="value")
 	private String value;
-
-	@ManyToOne
-	@JoinColumn(name = "idMeasureDef", referencedColumnName = "idMeasureDef")
-	private MeasureDefinition measureDefinition;
-
-	// notice that we haven't included a reference to the history in Person
-	// this means that we don't have to make this attribute XmlTransient
+	
+	@Column(name="measureType")
+	private String measureType;
+	
+	@Column(name="measureValueType")
+	private String measureValueType;
+	
 	@ManyToOne
 	@JoinColumn(name = "idPerson", referencedColumnName = "idPerson")
 	private Person person;
 
 	public HealthMeasureHistory() {
 	}
-
+	
+	@XmlElement(name="mid")
 	public int getIdMeasureHistory() {
 		return this.idMeasureHistory;
 	}
@@ -70,31 +79,45 @@ public class HealthMeasureHistory implements Serializable {
 	public void setIdMeasureHistory(int idMeasureHistory) {
 		this.idMeasureHistory = idMeasureHistory;
 	}
-
-	public Date getTimestamp() {
-		return this.timestamp;
+	
+	@XmlElement(name="dateRegistered")
+	public String getTimestamp() {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	    return df.format(timestamp);
 	}
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+	public void setTimestamp(String ts) throws ParseException {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date date = format.parse(ts);
+		this.timestamp = date;
 	}
-
+	
+	@XmlElement(name="measureValue")
 	public String getValue() {
 		return this.value;
 	}
-
+	
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-	public MeasureDefinition getMeasureDefinition() {
-	    return measureDefinition;
+	public void setMeasureType(String measureType) {
+		this.measureType = measureType;
+	}
+	
+	public String getMeasureType() {
+		return this.measureType;
 	}
 
-	public void setMeasureDefinition(MeasureDefinition param) {
-	    this.measureDefinition = param;
+	public void setMeasureValueType(String measureValueType) {
+		this.measureValueType = measureValueType;
 	}
-
+	
+	public String getMeasureValueType() {
+		return this.measureValueType;
+	}
+	
+	@XmlTransient
 	public Person getPerson() {
 	    return person;
 	}
