@@ -1,4 +1,5 @@
 package introsde.assignment.soap.ws;
+import introsde.assignment.soap.model.HealthMeasureHistory;
 import introsde.assignment.soap.model.Person;
 
 import java.util.List;
@@ -19,20 +20,40 @@ public interface People {
     public Person readPerson(@WebParam(name="personId") int id);
 
     @WebMethod(operationName="getPeopleList")
-    @WebResult(name="people") 
+    @WebResult(name="person") 
     public List<Person> getPeople();
 
     @WebMethod(operationName="createPerson")
-    @WebResult(name="personId") 
-    public int addPerson(@WebParam(name="person") Person person);
+    @WebResult(name="person") 
+    public Person addPerson(@WebParam(name="person") Person person);
 
     @WebMethod(operationName="updatePerson")
-    @WebResult(name="personId") 
-    public int updatePerson(@WebParam(name="person") Person person);
+    @WebResult(name="person") 
+    public Person updatePerson(@WebParam(name="person") Person person);
 
     @WebMethod(operationName="deletePerson")
     @WebResult(name="personId") 
     public int deletePerson(@WebParam(name="personId") int id);
+    
+    @WebMethod(operationName="readPersonHistory")
+    @WebResult(name="measure") 
+    public List<HealthMeasureHistory> readPersonHistory(@WebParam(name="personId") int id, @WebParam(name="measureType") String measureType);
+    
+    @WebMethod(operationName="readMeasureTypes")
+    @WebResult(name="measureType") 
+    public List<String> readMeasureTypes();
+    
+    @WebMethod(operationName="readPersonMeasure")
+    @WebResult(name="measure")
+	public HealthMeasureHistory readPersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measureType") String measureType, @WebParam(name="measureId") int mid);
+    
+    @WebMethod(operationName="savePersonMeasure")
+    @WebResult(name="measure")
+    public HealthMeasureHistory savePersonMeasure(@WebParam(name="personId") int id, @WebParam(name="measure") HealthMeasureHistory m);
+    
+    @WebMethod(operationName="updatePersonMeasure")
+    @WebResult(name="measure")
+    public HealthMeasureHistory updatePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") HealthMeasureHistory m);
     
     /*
     @WebMethod(operationName="updatePersonHealthProfile")

@@ -1,4 +1,5 @@
 package introsde.assignment.soap.ws;
+import introsde.assignment.soap.model.HealthMeasureHistory;
 import introsde.assignment.soap.model.Person;
 
 import java.util.List;
@@ -10,36 +11,42 @@ import javax.jws.WebService;
 @WebService(endpointInterface = "introsde.assignment.soap.ws.People",
     serviceName="PeopleService")
 public class PeopleImpl implements People {
-
+	  
+    //Method #1
+    @Override
+    public List<Person> getPeople() {
+        return Person.getAll();
+    }
+    
+    //Method #2
     @Override
     public Person readPerson(int id) {
         System.out.println("---> Reading Person by id = "+id);
         Person p = Person.getPersonById(id);
-        if (p!=null) {
+        if (p != null) {
             System.out.println("---> Found Person by id = "+id+" => "+p.getName());
         } else {
             System.out.println("---> Didn't find any Person with  id = "+id);
         }
         return p;
     }
-
+    
+    //Method #3
     @Override
-    public List<Person> getPeople() {
-        return Person.getAll();
+    public Person updatePerson(Person person) {
+        Person p = Person.updatePerson(person);
+        return p;
     }
-
+    
+    //Method #4
     @Override
-    public int addPerson(Person person) {
-        Person.savePerson(person);
-        return person.getIdPerson();
+    public Person addPerson(Person person) {
+    	//System.out.println("//////////"+person.getHMHistories());
+        Person p = Person.savePerson(person);
+        return p;
     }
-
-    @Override
-    public int updatePerson(Person person) {
-        Person.updatePerson(person);
-        return person.getIdPerson();
-    }
-
+      
+    //Method #5
     @Override
     public int deletePerson(int id) {
         Person p = Person.getPersonById(id);
@@ -50,6 +57,60 @@ public class PeopleImpl implements People {
             return -1;
         }
     }
+    
+    //Method #6
+    @Override
+    public List<HealthMeasureHistory> readPersonHistory(int id, String measureType){
+    	System.out.println("---> Reading Person by id = "+id);
+        Person p = Person.getPersonById(id);
+        List<HealthMeasureHistory> history = null;
+        if (p!=null) {
+            System.out.println("---> Found Person by id = "+id+" => "+p.getName());
+            history = Person.getHistory(p,measureType);
+        } else {
+            System.out.println("---> Didn't find any Person with  id = "+id);
+        }
+    	return history;
+    }
+    //Method #7
+    @Override
+    public List<String> readMeasureTypes(){
+    	System.out.println("ciao");
+    	List<String> l = HealthMeasureHistory.getMeasureTypes();
+    	System.out.println("%%%%%%%%%%"+l.get(1).toString());
+    	return HealthMeasureHistory.getMeasureTypes();
+    }
+    
+    //Method #8
+    @Override
+    public HealthMeasureHistory readPersonMeasure(Long id, String measureType, int mid){
+    	return HealthMeasureHistory.getHealthMeasureHistoryById(mid);
+    }
+    
+    //Method #9
+    @Override
+    public HealthMeasureHistory savePersonMeasure(int id, HealthMeasureHistory m){
+    	Person p = Person.getPersonById(id);
+    	if (p != null){
+    		m.setPerson(p);
+    		return HealthMeasureHistory.saveHealthMeasureHistory(m);
+    	}else{    			
+    		return null;
+    	}
+    }
+    
+    //Method #10
+    @Override
+    public HealthMeasureHistory updatePersonMeasure(Long id, HealthMeasureHistory m){
+    	HealthMeasureHistory h = HealthMeasureHistory.getHealthMeasureHistoryById(m.getIdMeasureHistory());
+    	if(h.getPerson().getIdPerson() == id){
+    		m.setPerson(h.getPerson());
+    		return HealthMeasureHistory.updateHealthMeasureHistory(m); 
+    	} else {
+    		return null;
+    	}
+    }
+    
     /*
     @Override
     public int updatePersonHP(int id, LifeStatus hp) {

@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -22,9 +23,14 @@ import javax.xml.bind.annotation.XmlType;
 @Table(name="Person") // to whole table must be persisted
 @NamedQueries({
 	@NamedQuery(name="Person.findAll", query="SELECT p FROM Person p"),
-	@NamedQuery(name="Person.currentHealth", query="SELECT h FROM HealthMeasureHistory h WHERE h.person = ?1 GROUP BY h.measureType HAVING h.timestamp = MAX(h.timestamp)")
+	@NamedQuery(name="Person.currentHealth", query="SELECT h FROM HealthMeasureHistory h "
+												+ "WHERE h.person = ?1 "
+												+ "GROUP BY h.measureType "
+												+ "HAVING h.timestamp = MAX(h.timestamp)"),
+	@NamedQuery(name="Person.readHistory", query="SELECT h FROM HealthMeasureHistory h "
+												+ "WHERE h.person = ?1 AND h.measureType LIKE ?2")
 })
-@XmlRootElement
+
 @XmlType(propOrder={"idPerson", "name", "lastname" , "birthdate", "healthMeasureHistories"})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -83,11 +89,17 @@ public class Person implements Serializable {
         return email;
     }
     
-    @XmlElement(name="currentHealth")
+    @XmlElementWrapper(name="currentHealth")
+    @XmlElement(name="measure")
     public List<HealthMeasureHistory> getHealthMeasureHistories() {
 		return this.getQueryCurrentHealth();
+    	//return this.healthMeasureHistories;
 	}
-    
+    /*
+    public List<HealthMeasureHistory> getHMHistories() {
+		return this.healthMeasureHistories;
+	}
+    */
     // setters
     public void setIdPerson(int idPerson){
         this.idPerson = idPerson;
@@ -162,6 +174,16 @@ public class Person implements Serializable {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 	    List<HealthMeasureHistory> list = em.createNamedQuery("Person.currentHealth", HealthMeasureHistory.class)
 	    		.setParameter(1, this)
+	    		.getResultList();
+	    LifeCoachDao.instance.closeConnections(em);
+	    return list;
+	}
+
+	public static List<HealthMeasureHistory> getHistory(Person p, String measureType) {
+		EntityManager em = LifeCoachDao.instance.createEntityManager();
+	    List<HealthMeasureHistory> list = em.createNamedQuery("Person.readHistory", HealthMeasureHistory.class)
+	    		.setParameter(1, p)
+	    		.setParameter(2, measureType)
 	    		.getResultList();
 	    LifeCoachDao.instance.closeConnections(em);
 	    return list;

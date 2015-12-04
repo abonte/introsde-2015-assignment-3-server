@@ -4,7 +4,6 @@ import introsde.assignment.soap.dao.LifeCoachDao;
 import introsde.assignment.soap.model.Person;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -37,8 +37,11 @@ import javax.xml.bind.annotation.XmlType;
  */
 @Entity
 @Table(name="HealthMeasureHistory")
-@NamedQuery(name="HealthMeasureHistory.findAll", query="SELECT h FROM HealthMeasureHistory h")
-@XmlRootElement
+@NamedQueries({
+	@NamedQuery(name="HealthMeasureHistory.findAll", query="SELECT h FROM HealthMeasureHistory h"),
+	@NamedQuery(name="HealthMeasureHistory.readMeasureTypes", query="SELECT DISTINCT h.measureType FROM HealthMeasureHistory h")
+})
+
 @XmlType(propOrder={"idMeasureHistory", "timestamp", "measureType" , "value" , "measureValueType"})
 public class HealthMeasureHistory implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -169,5 +172,13 @@ public class HealthMeasureHistory implements Serializable {
 	    em.remove(p);
 	    tx.commit();
 	    LifeCoachDao.instance.closeConnections(em);
+	}
+	
+	public static List<String> getMeasureTypes() {
+		EntityManager em = LifeCoachDao.instance.createEntityManager();
+	    List<String> list = em.createNamedQuery("HealthMeasureHistory.readMeasureTypes", String.class)
+	    		.getResultList();
+	    LifeCoachDao.instance.closeConnections(em);
+	    return list;
 	}
 }
