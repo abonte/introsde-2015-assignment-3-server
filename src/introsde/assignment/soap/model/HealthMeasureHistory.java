@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.annotations.FilterDef;
+
 
 /**
  * The persistent class for the "HealthMeasureHistory" database table.
@@ -41,7 +43,6 @@ import javax.xml.bind.annotation.XmlType;
 	@NamedQuery(name="HealthMeasureHistory.findAll", query="SELECT h FROM HealthMeasureHistory h"),
 	@NamedQuery(name="HealthMeasureHistory.readMeasureTypes", query="SELECT DISTINCT h.measureType FROM HealthMeasureHistory h")
 })
-
 @XmlType(propOrder={"idMeasureHistory", "timestamp", "measureType" , "value" , "measureValueType"})
 public class HealthMeasureHistory implements Serializable {
 	private static final long serialVersionUID = 1L;

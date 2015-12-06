@@ -10,13 +10,19 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-
+import javax.ejb.SessionBean;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.persistence.jpa.JpaEntityManager;
+import org.eclipse.persistence.sessions.Session;
+import org.eclipse.persistence.sessions.server.ServerSession;
+import org.hibernate.annotations.Filter;
+
 
 
 @Entity  // indicates that this class is an entity to persist in DB
@@ -31,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 												+ "WHERE h.person = ?1 AND h.measureType LIKE ?2")
 })
 
-@XmlType(propOrder={"idPerson", "name", "lastname" , "birthdate", "healthMeasureHistories"})
+@XmlType(propOrder={"idPerson", "name", "lastname" , "birthdate", "currentHealth"})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id // defines this attributed as the one that identifies the entity
@@ -60,7 +66,7 @@ public class Person implements Serializable {
     private String email;
     
     @OneToMany(mappedBy="person",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    private List<HealthMeasureHistory> healthMeasureHistories; 
+    private List<HealthMeasureHistory> currentHealth; 
     
     // add below all the getters and setters of all the private attributes
     
@@ -91,15 +97,10 @@ public class Person implements Serializable {
     
     @XmlElementWrapper(name="currentHealth")
     @XmlElement(name="measure")
-    public List<HealthMeasureHistory> getHealthMeasureHistories() {
-		return this.getQueryCurrentHealth();
-    	//return this.healthMeasureHistories;
+    public List<HealthMeasureHistory> getCurrentHealth() {
+    		return this.getQueryCurrentHealth();
 	}
-    /*
-    public List<HealthMeasureHistory> getHMHistories() {
-		return this.healthMeasureHistories;
-	}
-    */
+
     // setters
     public void setIdPerson(int idPerson){
         this.idPerson = idPerson;
@@ -121,8 +122,8 @@ public class Person implements Serializable {
     public void setEmail(String email){
         this.email = email;
     }   
-    public void setHealthMeasureHistories(List<HealthMeasureHistory> param) {
-		this.healthMeasureHistories = param;
+    public void setCurrentHealth(List<HealthMeasureHistory> param) {
+		this.currentHealth = param;
 	}
     
     public static Person getPersonById(int personId) {

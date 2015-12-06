@@ -2,8 +2,10 @@ package introsde.assignment.soap.ws;
 import introsde.assignment.soap.model.HealthMeasureHistory;
 import introsde.assignment.soap.model.Person;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 //Service Implementation
@@ -23,6 +25,7 @@ public class PeopleImpl implements People {
     public Person readPerson(int id) {
         System.out.println("---> Reading Person by id = "+id);
         Person p = Person.getPersonById(id);
+        
         if (p != null) {
             System.out.println("---> Found Person by id = "+id+" => "+p.getName());
         } else {
@@ -40,10 +43,21 @@ public class PeopleImpl implements People {
     
     //Method #4
     @Override
-    public Person addPerson(Person person) {
-    	//System.out.println("//////////"+person.getHMHistories());
-        Person p = Person.savePerson(person);
-        return p;
+    public Person addPerson(Person person,  List<HealthMeasureHistory> m){
+    	if(m == null){
+    		return Person.savePerson(person);
+    	}else{
+    		Person p = Person.savePerson(person);
+    		ArrayList<String> control = new ArrayList<>();
+    		for(int i=0; i<m.size(); i++){
+    			if(!control.contains(m.get(i).getMeasureType())){
+    				control.add(m.get(i).getMeasureType());
+    				m.get(i).setPerson(p);
+    				HealthMeasureHistory.saveHealthMeasureHistory(m.get(i));
+    			}
+    		}
+    		return Person.getPersonById(p.getIdPerson());
+    	}	
     }
       
     //Method #5

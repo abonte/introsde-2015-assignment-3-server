@@ -25,8 +25,8 @@ public interface People {
 
     @WebMethod(operationName="createPerson")
     @WebResult(name="person") 
-    public Person addPerson(@WebParam(name="person") Person person);
-
+    public Person addPerson(@WebParam(name="person") Person person, @WebParam(name="measure") List<HealthMeasureHistory> m);
+ 
     @WebMethod(operationName="updatePerson")
     @WebResult(name="person") 
     public Person updatePerson(@WebParam(name="person") Person person);
