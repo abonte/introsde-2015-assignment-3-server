@@ -129,7 +129,16 @@ public class HealthMeasureHistory implements Serializable {
 	public void setPerson(Person param) {
 	    this.person = param;
 	}
-
+	
+	public void toPrint() {
+    	System.out.println("-----------");
+    	System.out.println("id       		 : "+ idMeasureHistory);
+		System.out.println("dateRegistered	 : "+ getTimestamp());
+		System.out.println("measureType 	 : "+ measureType);
+		System.out.println("value 			 : "+ value);
+		System.out.println("measureValueType : "+ measureValueType);
+	}
+	
 	// database operations
 	public static HealthMeasureHistory getHealthMeasureHistoryById(int id) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();

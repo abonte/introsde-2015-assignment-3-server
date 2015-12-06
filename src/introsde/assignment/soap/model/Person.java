@@ -126,6 +126,17 @@ public class Person implements Serializable {
 		this.currentHealth = param;
 	}
     
+    public void toPrint() {
+    	System.out.println("******************");
+    	System.out.println("id       : "+ idPerson);
+		System.out.println("firstname: "+ name);
+		System.out.println("lastname : "+ lastname);
+		for(HealthMeasureHistory m:  this.getCurrentHealth()){
+			System.out.println("	");
+			m.toPrint();
+		}
+	}
+    
     public static Person getPersonById(int personId) {
         EntityManager em = LifeCoachDao.instance.createEntityManager();
         Person p = em.find(Person.class, personId);
