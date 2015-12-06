@@ -36,7 +36,6 @@ import org.hibernate.annotations.Filter;
 	@NamedQuery(name="Person.readHistory", query="SELECT h FROM HealthMeasureHistory h "
 												+ "WHERE h.person = ?1 AND h.measureType LIKE ?2")
 })
-
 @XmlType(propOrder={"idPerson", "name", "lastname" , "birthdate", "currentHealth"})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -72,27 +71,27 @@ public class Person implements Serializable {
     
     // getters
     public int getIdPerson(){
-        return idPerson;
+        return this.idPerson;
     }
 
     public String getLastname(){
-        return lastname;
+        return this.lastname;
     }
     @XmlElement(name="firstname")
     public String getName(){
-        return name;
+        return this.name;
     }
     @XmlTransient
     public String getUsername(){
-        return username;
+        return this.username;
     }
     public String getBirthdate(){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        return df.format(birthdate);
+        return df.format(this.birthdate);
     }
     @XmlTransient
     public String getEmail(){
-        return email;
+        return this.email;
     }
     
     @XmlElementWrapper(name="currentHealth")
@@ -137,15 +136,17 @@ public class Person implements Serializable {
 		}
 	}
     
-    public static Person getPersonById(int personId) {
+    public static Person getPersonById(int idPerson) {
         EntityManager em = LifeCoachDao.instance.createEntityManager();
-        Person p = em.find(Person.class, personId);
+        em.getEntityManagerFactory().getCache().evictAll();
+        Person p = em.find(Person.class, idPerson);
         LifeCoachDao.instance.closeConnections(em);
         return p;
     }
 
     public static List<Person> getAll() {
         EntityManager em = LifeCoachDao.instance.createEntityManager();
+        em.getEntityManagerFactory().getCache().evictAll();
         List<Person> list = em.createNamedQuery("Person.findAll", Person.class)
             .getResultList();
         LifeCoachDao.instance.closeConnections(em);

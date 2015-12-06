@@ -87,7 +87,7 @@ public class HealthMeasureHistory implements Serializable {
 	@XmlElement(name="dateRegistered")
 	public String getTimestamp() {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	    return df.format(timestamp);
+	    return df.format(this.timestamp);
 	}
 
 	public void setTimestamp(String ts) throws ParseException {
@@ -123,7 +123,7 @@ public class HealthMeasureHistory implements Serializable {
 	
 	@XmlTransient
 	public Person getPerson() {
-	    return person;
+	    return this.person;
 	}
 
 	public void setPerson(Person param) {
