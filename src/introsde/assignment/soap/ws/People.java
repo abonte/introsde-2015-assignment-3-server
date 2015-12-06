@@ -2,7 +2,6 @@ package introsde.assignment.soap.ws;
 import introsde.assignment.soap.model.HealthMeasureHistory;
 import introsde.assignment.soap.model.Person;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.jws.WebMethod;

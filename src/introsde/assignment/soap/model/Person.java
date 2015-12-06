@@ -10,20 +10,11 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-import javax.ejb.SessionBean;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
-import org.eclipse.persistence.jpa.JpaEntityManager;
-import org.eclipse.persistence.sessions.Session;
-import org.eclipse.persistence.sessions.server.ServerSession;
-import org.hibernate.annotations.Filter;
-
-
 
 @Entity  // indicates that this class is an entity to persist in DB
 @Table(name="Person") // to whole table must be persisted

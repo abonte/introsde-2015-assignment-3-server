@@ -1,13 +1,36 @@
-#  Assignment 03: SOAP Web Services
+# Assignment 03: SOAP Web Services
 
 ## [Introduction to Service Design and Engineering](https://github.com/IntroSDE) | [University of Trento](http://www.unitn.it/)
 
-This repository is the solution to the [third assignment](https://sites.google.com/a/unitn.it/introsde_2015-16/lab-sessions/assignments/assignment-3) of the course IntroSDE of the University of Trento. This assignment cover the following topics:
+# Sever
 
-* [LAB07](https://github.com/IntroSDE/lab07): 
-* [LAB08](https://github.com/IntroSDE/lab08) and [LAB09](https://github.com/IntroSDE/lab09): SOAP Web Services
+URL of my server: [https://secure-refuge-6052.herokuapp.com/](https://secure-refuge-6052.herokuapp.com/)  
+Client repository: [https://github.com/abonte/introsde-2015-assignment-3-client](https://github.com/abonte/introsde-2015-assignment-3-client)
 
-#da modificare
-The name of the student with whom I worked: Carlo Nicolò [https://github.com/carlonicolo/introsde-2015-assignment-2](https://github.com/carlonicolo/introsde-2015-assignment-2)  
-URL of my server: [https://peaceful-hamlet-5616.herokuapp.com/sdelab](https://peaceful-hamlet-5616.herokuapp.com/sdelab)  
-URL of my partner server: [https://enigmatic-sierra-2066.herokuapp.com/sdelab/](https://enigmatic-sierra-2066.herokuapp.com/sdelab/)  
+### Install
+In order to execute this server locally you need the following technologies (in the brackets you see the version used to develop):
+
+* Java (jdk1.8.0)
+* ANT (version 1.9.4)
+
+Then, clone the repository. Run in your terminal:
+
+```
+git clone https://github.com/abonte/introsde-2015-assignment-3-server && cd introsde-2015-assignment-3-server
+```
+
+and run the following command:
+```
+ant install
+```
+### Getting Started
+To run the server locally then run:
+```
+ant start
+```
+### Code
+**packages:**  
+*[src/introsde/assignment/soap/dao](src/introsde/assignment/soap/dao)*: contains the data access object; 
+*[src/introsde/assignment/soap/model](src/introsde/assignment/soap/model)*: contains the definition of *Person*, *HealthMeasureHistory*;  
+*[src/introsde/assignment/soap/endpoint](src/introsde/assignment/soap/endpoint)*: stand alone server;  
+*[src/introsde/assignment/soap/ws](src/introsde/assignment/soap/ws)*: SOAP web service;  
