@@ -5,7 +5,8 @@
 # Sever
 
 URL of my server: [https://secure-refuge-6052.herokuapp.com/](https://secure-refuge-6052.herokuapp.com/)  
-Client repository: [https://github.com/abonte/introsde-2015-assignment-3-client](https://github.com/abonte/introsde-2015-assignment-3-client)
+Client repository: [https://github.com/abonte/introsde-2015-assignment-3-client](https://github.com/abonte/introsde-2015-assignment-3-client)  
+I worked alone
 
 ### Install
 In order to execute this server locally you need the following technologies (in the brackets you see the version used to develop):
